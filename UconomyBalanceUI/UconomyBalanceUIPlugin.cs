@@ -1,5 +1,5 @@
 ﻿using fr34kyn01535.Uconomy;
-using JetBrains.Annotations;
+using HarmonyLib;
 using RestoreMonarchy.UconomyBalanceUI.Helpers;
 using Rocket.API;
 using Rocket.Core;
@@ -10,7 +10,6 @@ using Rocket.Unturned.Player;
 using SDG.NetTransport;
 using SDG.Unturned;
 using System;
-using static Rocket.Core.Plugins.RocketPluginManager;
 
 namespace RestoreMonarchy.UconomyBalanceUI
 {
@@ -20,9 +19,15 @@ namespace RestoreMonarchy.UconomyBalanceUI
 
         private short EffectKey = 29740;
 
+        private const string HarmonyId = "com.restoremonarchy.uconomybalanceui";
+        private Harmony harmony;
+
         protected override void Load()
         {
             Instance = this;
+
+            harmony = new(HarmonyId);            
+            harmony.PatchAll(Assembly);
 
             R.Plugins.OnPluginsLoaded += OnPluginsLoaded;
 
@@ -61,7 +66,10 @@ namespace RestoreMonarchy.UconomyBalanceUI
 
         private void OnBalanceUpdate(UnturnedPlayer player, decimal amt)
         {
-            Logger.Log($"{player.DisplayName} balance updated by {amt}", ConsoleColor.Yellow);
+            if (Configuration.Instance.Debug)
+            {
+                Logger.Log($"{player.DisplayName} balance updated by {amt}", ConsoleColor.Yellow);
+            }            
             AddToBalanceUIAnimation(player, amt);
             UpdateBalanceUI(player);
         }
@@ -69,15 +77,39 @@ namespace RestoreMonarchy.UconomyBalanceUI
         private void ShowBalanceUI(UnturnedPlayer player)
         {
             if (player.Player == null)
-            {
+            {   
                 return;
             }
 
             ITransportConnection transportConnection = player.Player.channel.owner.transportConnection;
             EffectManager.sendUIEffect(Configuration.Instance.EffectId, EffectKey, transportConnection, true);
+            EffectManager.sendUIEffectVisibility(EffectKey, transportConnection, true, "Money", false);
 
             UpdateBalanceUI(player);
 
+            EffectManager.sendUIEffectVisibility(EffectKey, transportConnection, true, "UconomyBalanceUI", true);
+        }
+
+        internal void HideBalanceUI(UnturnedPlayer player)
+        {
+            if (player.Player == null)
+            {
+                return;
+            }
+
+            ITransportConnection transportConnection = player.Player.channel.owner.transportConnection;
+            EffectManager.sendUIEffectVisibility(EffectKey, transportConnection, true, "Money", false);
+            EffectManager.sendUIEffectVisibility(EffectKey, transportConnection, true, "UconomyBalanceUI", false);
+        }
+
+        internal void ShowExistingBalanceUI(UnturnedPlayer player)
+        {
+            if (player.Player == null)
+            {
+                return;
+            }
+
+            ITransportConnection transportConnection = player.Player.channel.owner.transportConnection;
             EffectManager.sendUIEffectVisibility(EffectKey, transportConnection, true, "UconomyBalanceUI", true);
         }
 
