@@ -5,6 +5,7 @@ namespace RestoreMonarchy.UconomyBalanceUI
     public class UconomyBalanceUIConfiguration : IRocketPluginConfiguration
     {
         public bool Debug { get; set; }
+        public bool ShouldSerializeDebug() => Debug;
         public ushort EffectId { get; set; }
         public string BalanceFormat { get; set; }
         public string EarnMoneyFormat { get; set; }
