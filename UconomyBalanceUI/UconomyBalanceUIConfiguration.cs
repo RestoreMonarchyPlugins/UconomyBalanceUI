@@ -14,7 +14,7 @@ namespace RestoreMonarchy.UconomyBalanceUI
         public void LoadDefaults()
         {
             Debug = false;
-            EffectId = 29740;
+            EffectId = 27520;
             BalanceFormat = "[[b]]$ {0}[[/b]]";
             EarnMoneyFormat = "[[color=#3e853d]]+${0}[[/color]]";
             SpendMoneyFormat = "[[color=#ff0000]]-${0}[[/color]]";

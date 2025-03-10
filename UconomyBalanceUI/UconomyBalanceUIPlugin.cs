@@ -1,14 +1,10 @@
 ﻿using fr34kyn01535.Uconomy;
-using HarmonyLib;
 using RestoreMonarchy.UconomyBalanceUI.Components;
-using RestoreMonarchy.UconomyBalanceUI.Helpers;
-using Rocket.API;
 using Rocket.Core;
 using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
 using Rocket.Unturned;
 using Rocket.Unturned.Player;
-using SDG.NetTransport;
 using SDG.Unturned;
 using System;
 
@@ -24,6 +20,11 @@ namespace RestoreMonarchy.UconomyBalanceUI
 
             if (Level.isLoaded)
             {
+                if (Uconomy.Instance == null)
+                {
+                    throw new Exception("Uconomy is not loaded!");
+                }
+
                 OnPluginsLoaded();
             } else
             {
@@ -36,7 +37,9 @@ namespace RestoreMonarchy.UconomyBalanceUI
         protected override void Unload()
         {
             R.Plugins.OnPluginsLoaded -= OnPluginsLoaded;
+
             U.Events.OnPlayerConnected -= OnPlayerConnected;
+            U.Events.OnPlayerDisconnected -= OnPlayerDisconnected;
             if (Uconomy.Instance != null)
             {
                 Uconomy.Instance.OnBalanceUpdate -= OnBalanceUpdate;
@@ -49,7 +52,7 @@ namespace RestoreMonarchy.UconomyBalanceUI
         {
             if (Uconomy.Instance == null)
             {
-                throw new Exception("Uconomy is not loaded!");
+                Logger.Log($"Uconomy is not loaded!");
             }
 
             U.Events.OnPlayerConnected += OnPlayerConnected;
@@ -82,7 +85,7 @@ namespace RestoreMonarchy.UconomyBalanceUI
 
             if (Configuration.Instance.Debug)
             {
-                Logger.Log($"{player.DisplayName ?? "unkown"} balance updated by {amt}", ConsoleColor.Yellow);
+                Logger.Log($"{player.DisplayName} balance updated by {amt}", ConsoleColor.Yellow);
             }
 
             UconomyBalanceUIComponent component = player.Player.GetComponent<UconomyBalanceUIComponent>();

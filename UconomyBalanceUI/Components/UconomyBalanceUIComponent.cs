@@ -1,9 +1,7 @@
 ﻿using fr34kyn01535.Uconomy;
 using RestoreMonarchy.UconomyBalanceUI.Helpers;
-using Rocket.Unturned.Player;
 using SDG.NetTransport;
 using SDG.Unturned;
-using Steamworks;
 using System;
 using UnityEngine;
 
@@ -14,7 +12,7 @@ namespace RestoreMonarchy.UconomyBalanceUI.Components
         private UconomyBalanceUIPlugin pluginInstance => UconomyBalanceUIPlugin.Instance;
         private UconomyBalanceUIConfiguration configuration => pluginInstance.Configuration.Instance;
 
-        private const short EffectKey = 29740;
+        private const short EffectKey = 27520; 
 
         public Player Player { get; private set; }
 
