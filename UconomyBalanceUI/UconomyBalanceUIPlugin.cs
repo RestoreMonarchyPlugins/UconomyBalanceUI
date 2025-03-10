@@ -75,9 +75,14 @@ namespace RestoreMonarchy.UconomyBalanceUI
 
         private void OnBalanceUpdate(UnturnedPlayer player, decimal amt)
         {
+            if (player == null || player.Player == null)
+            {
+                return;
+            }
+
             if (Configuration.Instance.Debug)
             {
-                Logger.Log($"{player?.DisplayName ?? "unkown"} balance updated by {amt}", ConsoleColor.Yellow);
+                Logger.Log($"{player.DisplayName ?? "unkown"} balance updated by {amt}", ConsoleColor.Yellow);
             }
 
             UconomyBalanceUIComponent component = player.Player.GetComponent<UconomyBalanceUIComponent>();
