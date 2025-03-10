@@ -31,7 +31,8 @@ namespace RestoreMonarchy.UconomyBalanceUI
                 R.Plugins.OnPluginsLoaded += OnPluginsLoaded;
             }
 
-            Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
+            Logger.Log($"{Name} {Assembly.GetName().Version.ToString(3)} has been loaded!", ConsoleColor.Yellow);
+            Logger.Log("Check out more Unturned plugins at restoremonarchy.com");
         }
 
         protected override void Unload()
