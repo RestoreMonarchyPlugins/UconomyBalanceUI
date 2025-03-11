@@ -35,11 +35,7 @@ namespace RestoreMonarchy.UconomyBalanceUI.Commands
                     preference.UIDisabled = false;
                 }
 
-                UconomyBalanceUIComponent component = player.Player.GetComponent<UconomyBalanceUIComponent>();
-                if (component != null)
-                {
-                    UnityEngine.Object.Destroy(component);
-                }
+                player.Player.gameObject.AddComponent<UconomyBalanceUIComponent>();
 
                 pluginInstance.SendMessageToPlayer(player, "BalanceUIEnabled");
             }
@@ -59,7 +55,12 @@ namespace RestoreMonarchy.UconomyBalanceUI.Commands
                     preference.UIDisabled = true;
                 }
 
-                player.Player.gameObject.AddComponent<UconomyBalanceUIComponent>();
+                UconomyBalanceUIComponent component = player.Player.GetComponent<UconomyBalanceUIComponent>();
+                if (component != null)
+                {
+                    UnityEngine.Object.Destroy(component);
+                }
+
                 pluginInstance.SendMessageToPlayer(player, "BalanceUIDisabled");
             }
         }
