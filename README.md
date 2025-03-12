@@ -1,5 +1,5 @@
 # Uconomy Balance UI
-Adds a simple UI that displays the player's Uconomy balance in the bottom center of the screen.
+Simple UI that displays the player's Uconomy balance in the bottom center of the screen.
 
 ## Features
 * Customizable with rich text formatting
