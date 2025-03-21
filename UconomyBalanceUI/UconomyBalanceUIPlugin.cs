@@ -1,5 +1,6 @@
 ﻿using fr34kyn01535.Uconomy;
 using RestoreMonarchy.UconomyBalanceUI.Components;
+using RestoreMonarchy.UconomyBalanceUI.Helpers;
 using RestoreMonarchy.UconomyBalanceUI.Models;
 using RestoreMonarchy.UconomyBalanceUI.Storages;
 using Rocket.API;
@@ -130,24 +131,27 @@ namespace RestoreMonarchy.UconomyBalanceUI
 
         private void OnBalanceUpdate(UnturnedPlayer player, decimal amt)
         {
-            if (player == null || player.Player == null)
+            ThreadHelper.RunSynchronously(() =>
             {
-                return;
-            }
+                if (player == null || player.Player == null)
+                {
+                    return;
+                }
 
-            if (Configuration.Instance.Debug)
-            {
-                Logger.Log($"{player.DisplayName} balance updated by {amt}", ConsoleColor.Yellow);
-            }
+                if (Configuration.Instance.Debug)
+                {
+                    Logger.Log($"{player.DisplayName} balance updated by {amt}", ConsoleColor.Yellow);
+                }
 
-            UconomyBalanceUIComponent component = player.Player.GetComponent<UconomyBalanceUIComponent>();
-            if (component == null)
-            {
-                return;
-            }
+                UconomyBalanceUIComponent component = player.Player.GetComponent<UconomyBalanceUIComponent>();
+                if (component == null)
+                {
+                    return;
+                }
 
-            component.AddToBalanceUIAnimation(amt);
-            component.UpdateBalanceUI();            
+                component.AddToBalanceUIAnimation(amt);
+                component.UpdateBalanceUI();
+            });
         }
 
         internal void SendMessageToPlayer(IRocketPlayer player, string translationKey, params object[] placeholder)
