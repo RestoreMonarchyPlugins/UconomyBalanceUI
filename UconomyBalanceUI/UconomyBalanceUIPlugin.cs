@@ -44,7 +44,9 @@ namespace RestoreMonarchy.UconomyBalanceUI
             {
                 if (Uconomy.Instance == null)
                 {
-                    throw new Exception("Uconomy is not loaded!");
+                    Logger.Log("Uconomy is not loaded!", ConsoleColor.Yellow);
+                    UnloadPlugin(PluginState.Cancelled);
+                    return;
                 }
 
                 OnPluginsLoaded();
@@ -84,7 +86,9 @@ namespace RestoreMonarchy.UconomyBalanceUI
         {
             if (Uconomy.Instance == null)
             {
-                Logger.Log($"Uconomy is not loaded!");
+                Logger.Log($"Uconomy is not loaded!", ConsoleColor.Yellow);
+                UnloadPlugin(PluginState.Cancelled);
+                return;
             }
 
             U.Events.OnPlayerConnected += OnPlayerConnected;
